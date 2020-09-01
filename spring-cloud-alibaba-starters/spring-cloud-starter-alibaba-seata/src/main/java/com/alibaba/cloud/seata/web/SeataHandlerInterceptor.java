@@ -27,6 +27,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
+ * seata 拦截器，用于传递xid
  * @author xiaojing
  *
  * Seata HandlerInterceptor, Convert Seata information into
