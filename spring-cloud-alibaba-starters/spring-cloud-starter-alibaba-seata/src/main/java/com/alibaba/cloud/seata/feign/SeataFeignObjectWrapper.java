@@ -28,6 +28,7 @@ import org.springframework.cloud.openfeign.ribbon.CachingSpringLoadBalancerFacto
 import org.springframework.cloud.openfeign.ribbon.LoadBalancerFeignClient;
 
 /**
+ * TODO: 专门用于处理 进行包装 feign 的 Client
  * @author xiaojing
  */
 public class SeataFeignObjectWrapper {
@@ -45,17 +46,22 @@ public class SeataFeignObjectWrapper {
 	}
 
 	Object wrap(Object bean) {
+		// TODO: 对 Client 进行包装，不能是SeataFeignClient, SeataFeignClient是包装完的
 		if (bean instanceof Client && !(bean instanceof SeataFeignClient)) {
+			// TODO: 如果是LoadBalancerFeignClient类型的，对它进行包装
 			if (bean instanceof LoadBalancerFeignClient) {
 				LoadBalancerFeignClient client = ((LoadBalancerFeignClient) bean);
 				return new SeataLoadBalancerFeignClient(client.getDelegate(), factory(),
 						clientFactory(), this);
 			}
+			// TODO: 接着对bean进行包装
 			if (bean instanceof FeignBlockingLoadBalancerClient) {
 				FeignBlockingLoadBalancerClient client = (FeignBlockingLoadBalancerClient) bean;
+				// TODO: 同样的对bean进行包装
 				return new SeataFeignBlockingLoadBalancerClient(client.getDelegate(),
 						beanFactory.getBean(BlockingLoadBalancerClient.class), this);
 			}
+			// TODO: 最后对bean进行包一下
 			return new SeataFeignClient(this.beanFactory, (Client) bean);
 		}
 		return bean;

@@ -27,7 +27,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
- * seata 拦截器，用于传递xid
+ * seata 拦截器，用于传递xid， 这里使用的是spring拦截器
  * @author xiaojing
  *
  * Seata HandlerInterceptor, Convert Seata information into
@@ -46,12 +46,14 @@ public class SeataHandlerInterceptor implements HandlerInterceptor {
 			Object handler) {
 
 		String xid = RootContext.getXID();
+		// TODO: 从request头中，把xid取到
 		String rpcXid = request.getHeader(RootContext.KEY_XID);
 		if (log.isDebugEnabled()) {
 			log.debug("xid in RootContext {} xid in RpcContext {}", xid, rpcXid);
 		}
-
+		// TODO: 如果xid 在当前请求中不存在 ok，那就去bind上 当前的threadLocal
 		if (xid == null && rpcXid != null) {
+			// TODO: 绑定rpcXid
 			RootContext.bind(rpcXid);
 			if (log.isDebugEnabled()) {
 				log.debug("bind {} to RootContext", rpcXid);
@@ -63,20 +65,22 @@ public class SeataHandlerInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
 			Object handler, Exception e) {
-
+		// TODO: 完成这次请求之后，从请求头中把xid取到
 		String rpcXid = request.getHeader(RootContext.KEY_XID);
 
 		if (StringUtils.isEmpty(rpcXid)) {
 			return;
 		}
-
+		// TODO: 进行解绑
 		String unbindXid = RootContext.unbind();
 		if (log.isDebugEnabled()) {
 			log.debug("unbind {} from RootContext", unbindXid);
 		}
+		// TODO: 如果解绑的和当前的不是一个
 		if (!rpcXid.equalsIgnoreCase(unbindXid)) {
 			log.warn("xid in change during RPC from {} to {}", rpcXid, unbindXid);
 			if (unbindXid != null) {
+				// TODO: 又重新绑定上了
 				RootContext.bind(unbindXid);
 				log.warn("bind {} back to RootContext", unbindXid);
 			}

@@ -36,6 +36,7 @@ public class SeataLoadBalancerFeignClient extends LoadBalancerFeignClient {
 			CachingSpringLoadBalancerFactory lbClientFactory,
 			SpringClientFactory clientFactory,
 			SeataFeignObjectWrapper seataFeignObjectWrapper) {
+		// TODO: 对LoadBalancerFeignClient中的delegate进行包装
 		super((Client) seataFeignObjectWrapper.wrap(delegate), lbClientFactory,
 				clientFactory);
 	}

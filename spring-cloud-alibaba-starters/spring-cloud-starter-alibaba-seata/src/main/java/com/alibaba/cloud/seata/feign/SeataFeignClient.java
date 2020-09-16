@@ -54,19 +54,26 @@ public class SeataFeignClient implements Client {
 
 	@Override
 	public Response execute(Request request, Request.Options options) throws IOException {
-
+		// TODO: 对请求头进行修改
 		Request modifiedRequest = getModifyRequest(request);
+		// TODO: 然后接着由client去执行
 		return this.delegate.execute(modifiedRequest, options);
 	}
 
+	/**
+	 * TODO: 修改请求头
+	 * @param request
+	 * @return
+	 */
 	private Request getModifyRequest(Request request) {
 
 		String xid = RootContext.getXID();
-
+		// TODO: 如果当前作用域中没有xid，ok，那就把request进行返回吧
 		if (StringUtils.isEmpty(xid)) {
 			return request;
 		}
 
+		// TODO: 对请求头进行修改
 		Map<String, Collection<String>> headers = new HashMap<>(MAP_SIZE);
 		headers.putAll(request.headers());
 
@@ -74,6 +81,7 @@ public class SeataFeignClient implements Client {
 		seataXid.add(xid);
 		headers.put(RootContext.KEY_XID, seataXid);
 
+		// TODO: 然后创建request返回 回去
 		return Request.create(request.method(), request.url(), headers, request.body(),
 				request.charset());
 	}

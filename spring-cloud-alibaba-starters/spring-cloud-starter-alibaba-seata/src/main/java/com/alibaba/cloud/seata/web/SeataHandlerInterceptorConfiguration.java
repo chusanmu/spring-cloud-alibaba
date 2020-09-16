@@ -26,6 +26,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ConditionalOnWebApplication
 public class SeataHandlerInterceptorConfiguration implements WebMvcConfigurer {
 
+	/**
+	 * TODO: 注册了一个拦截器，拦截所有的请求
+	 * @param registry
+	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new SeataHandlerInterceptor()).addPathPatterns("/**");

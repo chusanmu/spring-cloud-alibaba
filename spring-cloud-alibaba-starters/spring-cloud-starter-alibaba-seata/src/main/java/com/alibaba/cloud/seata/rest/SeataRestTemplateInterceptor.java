@@ -38,7 +38,7 @@ public class SeataRestTemplateInterceptor implements ClientHttpRequestIntercepto
 		HttpRequestWrapper requestWrapper = new HttpRequestWrapper(httpRequest);
 
 		String xid = RootContext.getXID();
-
+		// TODO: 如果xid不为空，加到header里面，继续往下传
 		if (!StringUtils.isEmpty(xid)) {
 			requestWrapper.getHeaders().add(RootContext.KEY_XID, xid);
 		}

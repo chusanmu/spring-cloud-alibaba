@@ -48,8 +48,12 @@ public class SeataRestTemplateAutoConfiguration {
 
 	@PostConstruct
 	public void init() {
+		/**
+		 * TODO: 如果restTemplates不为空，ok，那就把restTemplate全取出来
+		 */
 		if (this.restTemplates != null) {
 			for (RestTemplate restTemplate : restTemplates) {
+				// TODO: 一个个的把它的拦截器拿出来，之后加到interceptors
 				List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>(
 						restTemplate.getInterceptors());
 				interceptors.add(this.seataRestTemplateInterceptor);

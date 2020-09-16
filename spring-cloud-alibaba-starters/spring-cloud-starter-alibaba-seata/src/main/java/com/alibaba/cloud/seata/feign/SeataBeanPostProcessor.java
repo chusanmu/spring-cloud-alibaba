@@ -33,6 +33,7 @@ public class SeataBeanPostProcessor implements BeanPostProcessor {
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName)
 			throws BeansException {
+		// TODO: 对feign 的 client进行包装
 		return this.seataFeignObjectWrapper.wrap(bean);
 	}
 
